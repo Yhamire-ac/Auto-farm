@@ -1,3 +1,6 @@
+queue_on_teleport(
+    'loadstring(game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/main.lua"))()'
+)
 -- Prevent multiple loops running across place loads
 if _G.originalScriptRunning then
     return -- already running, stop this new execution
