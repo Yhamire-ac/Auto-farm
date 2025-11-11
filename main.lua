@@ -1,9 +1,3 @@
--- Prevent multiple loops running across place loads
-if getgenv().originalScriptRunning then
-    return  -- already running, stop this new execution
-end
-getgenv().originalScriptRunning = true
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 function Startgame()
@@ -58,28 +52,19 @@ local function mainLoop()
     end
 end
 
-local function runScript()
-    if not getgenv().originalScriptRunning then
-        getgenv().originalScriptRunning = true
-        task.spawn(mainLoop)
-    end
-end
-
+-- Start the loop immediately when game is loaded
 if game:IsLoaded() then
     task.spawn(mainLoop)
+else
+    game.Loaded:Connect(function()
+        task.spawn(mainLoop)
+    end)
 end
 
+-- Queue teleport reload
 local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-
 if queueteleport then
     queueteleport([[
-        getgenv().originalScriptRunning = nil
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/main.lua'))()
     ]])
 end
-
-game.Loaded:Connect(function()
-    if not getgenv().originalScriptRunning then
-        task.spawn(mainLoop)
-    end
-end)
