@@ -85,12 +85,9 @@ game.Loaded:Connect(function()
 end)
 
 local Players = game:GetService("Players")
-local mainGuis = Players.LocalPlayer.PlayerGui.Interface.GameOverScreen
+local mainGuis = Players.LocalPlayer.PlayerGui.Interface.GameOverScreen.Main
 
 function getrewards()
-    local mainGui = Players.LocalPlayer.PlayerGui.Interface.GameOverScreen.Main
-
-    -- Names we want to capture
     local wanted = {
         Map = true,
         Mode = true,
@@ -101,20 +98,14 @@ function getrewards()
         XP = true,
     }
 
-    -- Storage for results
     local results = {}
 
-    -- Determine status
-    local status
     if mainGui.DefeatText.Visible and not mainGui.VictoryText.Visible then
-        status = "Defeated"
+        results.Status = "Defeated"
     else
-        status = "Victorious"
+        results.Status = "Victorious"
     end
 
-    results.Status = status
-
-    -- Extract wanted values
     for _, child in ipairs(mainGui:GetDescendants()) do
         if wanted[child.Name] then
             if child:IsA("TextLabel") then
@@ -131,12 +122,14 @@ function getrewards()
     return results
 end
 
-local HttpService = game:GetService("HttpService")
-local WEBHOOK_URL = "https://discordapp.com/api/webhooks/1438351456150487143/ae8QE0aY5iS1RHlYx60FoCkeFTZ3CFoUrf-rrLEpnwY3oarhSyQikuxYhL2NIfUCYimK"
+-------------------------------------------------------
+-- DISCORD EMBED SENDER
+-------------------------------------------------------
 
+local HttpService = game:GetService("HttpService")
+local WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_HERE"
 
 local function sendEmbed(data)
-    
     local http = syn and syn.request
         or http_request
         or request
@@ -144,7 +137,7 @@ local function sendEmbed(data)
         or (fluxus and fluxus.request)
 
     if not http then
-        warn("Your executor does not support HTTP requests.")
+        warn("Executor does not support HTTP.")
         return
     end
 
@@ -156,13 +149,8 @@ local function sendEmbed(data)
     })
 end
 
-
-
 function sendGameOverEmbed(results)
-
-    local color = results.Status == "Victorious" and 0x2ECC71 or 0xE74C3C  -- green or red
-
-
+    local color = results.Status == "Victorious" and 0x2ECC71 or 0xE74C3C
     local timestamp = os.date("%Y-%m-%d %H:%M:%S")
 
     local embed = {
@@ -173,34 +161,38 @@ function sendGameOverEmbed(results)
             { name = "Map", value = results.Map or "N/A", inline = true },
             { name = "Mode", value = results.Mode or "N/A", inline = true },
             { name = "Time", value = results.Time or "N/A", inline = true },
-
             { name = "Crystals", value = results.Crystals or "N/A", inline = true },
             { name = "Gold", value = results.Gold or "N/A", inline = true },
             { name = "Tokens", value = results.Tokens or "N/A", inline = true },
             { name = "XP", value = results.XP or "N/A", inline = true }
         },
 
-        footer = {
-            text = "Logged at " .. timestamp
-        },
-
-
+        footer = { text = "Logged at " .. timestamp }
     }
 
-    sendEmbed({ embeds = { embed } })v
+    sendEmbed({ embeds = { embed } })
 end
 
-while true do 
+-------------------------------------------------------
+-- MAIN GAMEOVER LOOP (FIXED)
+-------------------------------------------------------
+
+local sent = false
+
+while true do
     task.wait(1)
-    if mainGuis.Visible == true then 
 
-    local rewards = getrewards()
-    sendGameOverEmbed(rewards)
+    if mainGui.Visible and not sent then
+        sent = true
 
-    game:GetService('ReplicatedStorage'):WaitForChild('Remotes'):WaitForChild('RequestTeleportToLobby'):FireServer()
-    
+        local rewards = getrewards()
+        sendGameOverEmbed(rewards)
 
+        game:GetService("ReplicatedStorage")
+            .Remotes.RequestTeleportToLobby:FireServer()
+    end
+
+    if not mainGui.Visible then
+        sent = false
     end
 end
-
-
