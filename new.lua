@@ -87,15 +87,19 @@ game.Loaded:Connect(function()
     end
 end)
 
+local Players = game:GetService('Players')
+local mainGui = Players.LocalPlayer.PlayerGui.Interface.GameOverScreen
 
 local sent = false
 
 while true do
     task.wait(1)
-    if mainGuis.Visible == true and not sent then
+    print("checking...")
+    if mainGui.Visible == true and not sent then
         sent = true
         loadstring(
             game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua")
         )()
     end
 end
+
