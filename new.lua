@@ -24,9 +24,9 @@ function map()
 end
 
 function macro()
-    loadstring(
-        game:HttpGet("https://raw.githubusercontent.com/couldntBeT/Main/refs/heads/main/Main.lua")
-    )()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/couldntBeT/Main/refs/heads/main/Main.lua"))()
+    print("loading WEBHOOK")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua"))()
 end
 
 local macroHasRun = false
@@ -86,17 +86,3 @@ game.Loaded:Connect(function()
         task.spawn(mainLoop)
     end
 end)
-
-local Players = game:GetService("Players")
-
-local function onCharacterAdded(char)
-    print("loading WEBHOOK")
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua"))()
-end
-
-local player = Players.LocalPlayer
-player.CharacterAdded:Connect(onCharacterAdded)
-
-if player.Character then
-    onCharacterAdded(player.Character)
-end
