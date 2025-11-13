@@ -53,9 +53,9 @@ local function mainLoop()
 
         else
             print("in game")
+            loadweb()
             if not macroHasRun then
                 macro()
-                loadweb()
                 macroHasRun = true
             end
         end
