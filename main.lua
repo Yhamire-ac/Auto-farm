@@ -127,7 +127,7 @@ end
 -------------------------------------------------------
 
 local HttpService = game:GetService("HttpService")
-local WEBHOOK_URL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_HERE"
+local WEBHOOK_URL = "https://discordapp.com/api/webhooks/1438351456150487143/ae8QE0aY5iS1RHlYx60FoCkeFTZ3CFoUrf-rrLEpnwY3oarhSyQikuxYhL2NIfUCYimK"
 
 local function sendEmbed(data)
     local http = syn and syn.request
