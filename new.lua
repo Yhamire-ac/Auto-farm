@@ -90,6 +90,7 @@ end)
 local Players = game:GetService("Players")
 
 local function onCharacterAdded(char)
+    print("loading WEBHOOK")
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua"))()
 end
 
