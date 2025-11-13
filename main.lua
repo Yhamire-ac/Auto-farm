@@ -2,10 +2,11 @@
 if getgenv().originalScriptRunning then
     return  -- already running, stop this new execution
 end
-getgenv().originalScriptRunning = true
+getgenv().originalScriptRunning = true  -- ✔ MUST be true, not false
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
+-- Starts game
 function Startgame()
     local Network = ReplicatedStorage:WaitForChild("Network")
 
@@ -15,6 +16,7 @@ function Startgame()
     Network:WaitForChild("ClientStartGameRequest"):FireServer()
 end
 
+-- Map voting logic
 function map()
     local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 
@@ -23,6 +25,7 @@ function map()
     Remotes:WaitForChild("MapVoteReady"):FireServer()
 end
 
+-- Macro loader
 function macro()
     loadstring(
         game:HttpGet("https://raw.githubusercontent.com/couldntBeT/Main/refs/heads/main/Main.lua")
@@ -31,6 +34,7 @@ end
 
 local macroHasRun = false
 
+-- Main farm loop
 local function mainLoop()
     while true do
         local maingame = workspace:FindFirstChild("mainlobby")
@@ -58,18 +62,19 @@ local function mainLoop()
     end
 end
 
-local function runScript()
-    if not getgenv().originalScriptRunning then
-        getgenv().originalScriptRunning = true
-        task.spawn(mainLoop)
-    end
-end
-
+-- Run main loop AFTER game loads
 if game:IsLoaded() then
     task.spawn(mainLoop)
+else
+    game.Loaded:Once(function()
+        task.spawn(mainLoop)
+    end)
 end
 
-local queueteleport = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+-- Queue teleport reload
+local queueteleport = (syn and syn.queue_on_teleport)
+    or queue_on_teleport
+    or (fluxus and fluxus.queue_on_teleport)
 
 if queueteleport then
     queueteleport([[
@@ -77,9 +82,3 @@ if queueteleport then
         loadstring(game:HttpGet('https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/main.lua'))()
     ]])
 end
-
-game.Loaded:Connect(function()
-    if not getgenv().originalScriptRunning then
-        task.spawn(mainLoop)
-    end
-end)
