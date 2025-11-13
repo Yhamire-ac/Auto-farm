@@ -2,7 +2,7 @@
 if getgenv().originalScriptRunning then
     return 
 end
-getgenv().originalScriptRunning = false
+getgenv().originalScriptRunning = true
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
