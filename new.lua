@@ -2,7 +2,7 @@
 if getgenv().originalScriptRunning then
     return 
 end
-getgenv().originalScriptRunning = true
+getgenv().originalScriptRunning = false
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -87,16 +87,15 @@ game.Loaded:Connect(function()
     end
 end)
 
-local Players = game:GetService('Players')
-local mainGui = Players.LocalPlayer.PlayerGui.Interface.GameOverScreen
+local Players = game:GetService("Players")
 
-while true do
-    task.wait(1)
-    print("checking...")
-    if mainGui.Visible == true  then
-        sent = true
-        loadstring(
-            game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua")
-        )()
-    end
+local function onCharacterAdded(char)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua"))()
+end
+
+local player = Players.LocalPlayer
+player.CharacterAdded:Connect(onCharacterAdded)
+
+if player.Character then
+    onCharacterAdded(player.Character)
 end
