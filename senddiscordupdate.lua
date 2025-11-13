@@ -101,7 +101,7 @@ function sendGameOverEmbed(results)
 
     }
 
-    sendEmbed({ embeds = { embed } })v
+    sendEmbed({ embeds = { embed } })
 end
 
 
