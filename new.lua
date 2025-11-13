@@ -25,9 +25,14 @@ end
 
 function macro()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/couldntBeT/Main/refs/heads/main/Main.lua"))()
+
+end
+
+function loadweb()
     print("loading WEBHOOK")
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua"))()
 end
+
 
 local macroHasRun = false
 
@@ -50,6 +55,7 @@ local function mainLoop()
             print("in game")
             if not macroHasRun then
                 macro()
+                loadweb()
                 macroHasRun = true
             end
         end
