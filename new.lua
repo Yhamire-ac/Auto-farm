@@ -77,7 +77,7 @@ local queueteleport =
 if queueteleport then
     queueteleport([[
         getgenv().originalScriptRunning = nil
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/main.lua'))()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/new.lua'))()
     ]])
 end
 
@@ -86,3 +86,16 @@ game.Loaded:Connect(function()
         task.spawn(mainLoop)
     end
 end)
+
+
+local sent = false
+
+while true do
+    task.wait(1)
+    if mainGuis.Visible == true and not sent then
+        sent = true
+        loadstring(
+            game:HttpGet("https://raw.githubusercontent.com/Yhamire-ac/Auto-farm/refs/heads/main/senddiscordupdate.lua")
+        )()
+    end
+end
