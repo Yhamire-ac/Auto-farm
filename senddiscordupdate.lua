@@ -104,5 +104,6 @@ end
 local rewards = getrewards()
 sendGameOverEmbed(rewards)
 
+task.wait(2)
 game:GetService('ReplicatedStorage').Remotes.RequestTeleportToLobby:FireServer()
 
